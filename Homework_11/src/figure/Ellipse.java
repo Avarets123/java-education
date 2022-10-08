@@ -1,9 +1,14 @@
 package figure;
 
-public class Ellipse extends Figure {
+public class Ellipse extends Circle {
 
-    public Ellipse(int sideA, int sideB) {
-        super(sideA, sideB);
+    private double radiusB;
+
+
+    public Ellipse(double radiusA, double radiusB) {
+        super(radiusA);
+        this.radiusB = radiusB;
+
     }
 
     @Override
@@ -14,7 +19,9 @@ public class Ellipse extends Figure {
 
     @Override
     public void calculateArea() {
-        double area = 3.14 * getHeight() * getLength();
+        double area = 3.14 * getRadius() * this.radiusB;
         System.out.println("Площадь эллипса равен " + area);
     }
+
+
 }
