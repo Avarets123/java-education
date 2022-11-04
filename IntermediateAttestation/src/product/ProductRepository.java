@@ -1,10 +1,9 @@
 package product;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ProductRepository implements CustomRepository<Product> {
@@ -43,10 +42,40 @@ public class ProductRepository implements CustomRepository<Product> {
 
     @Override
     public void update(Product item) {
+        BufferedWriter writer = null;
+        try {
+
+            List<String> products = productStream()
+                    .map((Product product) -> {
+                        if (product.getId() == item.getId()) {
+                            return item;
+                        }
+                        return product;
+                    })
+                    .map(mapToString)
+                    .toList();
+
+
+            writer = new BufferedWriter(new FileWriter(filename));
+            for (String prod : products) {
+                writer.write(prod + "\n");
+            }
+
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
 
     }
 
-    private Stream<Product> productStream() throws IOException {
+    public Stream<Product> productStream() throws IOException {
         return
             new BufferedReader(new FileReader(filename))
                 .lines()
@@ -62,4 +91,10 @@ public class ProductRepository implements CustomRepository<Product> {
                 Double.parseDouble(parts[2]),
                 Integer.parseInt(parts[3]));
     };
+
+
+    private final Function<Product, String> mapToString = Product::toString;
+
+
+
 }
