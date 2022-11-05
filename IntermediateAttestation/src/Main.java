@@ -2,18 +2,15 @@ import product.Product;
 import product.ProductRepository;
 
 public class Main {
-    public static void main(String[] args) {
+  public static void main(String[] args) {
 
-        ProductRepository productRepository = new ProductRepository("products.txt");
+    ProductRepository productRepository = new ProductRepository("products.txt");
 
-        Product product = new Product(5, "Сгущенка", 24.8, 7);
-        productRepository.update(product);
+    Product bread = productRepository.findById(3);
+    bread.setCount(100);
+    bread.setPrice(25);
 
-        System.out.println(productRepository.findById(3));
-        System.out.println(productRepository.findByTitleLike("К"));
+    productRepository.update(bread);
 
-
-
-
-    }
+  }
 }
