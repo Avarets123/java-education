@@ -8,7 +8,7 @@ public class Main {
         completeAllTasks(tasks);
     }
 
-    public static void completeAllTasks(Task[] tasks) {
+    private static void completeAllTasks(Task[] tasks) {
         for (Task task : tasks) {
             task.complete();
         }
